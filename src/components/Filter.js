@@ -15,7 +15,7 @@ export default class Filter extends Component {
                         <option value="highest">Highest</option>
 
                     </select>
-                </div>  
+                </div>
                 <div className="filter-size">
                     Filter{" "}
                     <select value={this.props.size} onChange={this.props.filterProducts}>
@@ -27,7 +27,7 @@ export default class Filter extends Component {
                         <option value="XL">XL</option>
                         <option value="XXL">XXL</option>
                     </select>
-                </div>  
+                </div>
             </div>
         )
     }
