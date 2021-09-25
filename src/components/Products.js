@@ -3,47 +3,60 @@ import formatCurrency from '../util';
 import Flash from 'react-reveal/Flash';
 import Modal from "react-modal";
 import Zoom from 'react-reveal/Zoom';
+import { connect } from 'react-redux';
+import { fetchProducts } from '../actions/productActions';
 
-export default class Products extends Component {
+class Products extends Component {
     constructor(props) {
         super(props);
         this.state = {
             product: null
         }
     }
+
+    componentDidMount() {
+        this.props.fetchProducts();
+    }
+
     openModal = (product) => {
         this.setState({ product });
     };
+
     closeModal = () => {
         this.setState({ product: null });
     };
+
     render() {
         const { product } = this.state;
         return (
             <div>
                 <Flash bottom cascade>
-                    <ul className="products">
-                        {this.props.products.map(product => (
-                            <li key={product._id}>
-                                <div className="product">
-                                    <a href={"#" + product._id} onClick={() => this.openModal(product)}>
-                                        <img src={product.image} alt={product.title}></img>
-                                        <p>
-                                            {product.title}
-                                        </p>
-                                    </a>
-                                    <div className="product-price">
-                                        <div>
-                                            {formatCurrency(product.price)}
+                    {
+                        !this.props.products ? (<div>Loading...</div>
+                        ) : (
+                            <ul className="products">
+                                {this.props.products.map(product => (
+                                    <li key={product._id}>
+                                        <div className="product">
+                                            <a href={"#" + product._id} onClick={() => this.openModal(product)}>
+                                                <img src={product.image} alt={product.title}></img>
+                                                <p>
+                                                    {product.title}
+                                                </p>
+                                            </a>
+                                            <div className="product-price">
+                                                <div>
+                                                    {formatCurrency(product.price)}
+                                                </div>
+                                                <button onClick={() => this.props.addToCart(product)} className="button primary">
+                                                    Add To Cart
+                                                </button>
+                                            </div>
                                         </div>
-                                        <button onClick={() => this.props.addToCart(product)} className="button primary">
-                                            Add To Cart
-                                        </button>
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                                    </li>
+                                ))}
+                            </ul>)
+                    }
                 </Flash>
                 {
                     product && (
@@ -92,3 +105,5 @@ export default class Products extends Component {
         )
     }
 }
+
+export default connect((state) => ({ products: state.products.items }), { fetchProducts })(Products);
