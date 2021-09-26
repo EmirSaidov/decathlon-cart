@@ -8,4 +8,7 @@ after installing all packages you have to run
     "npm run server" - to start a server for api handling
 
 -if no products are shown it means that api was not started correctly 
+
 -all items in the cart are stored in the local cache
+
+-app uses mongoDB Atlas for storing products 
